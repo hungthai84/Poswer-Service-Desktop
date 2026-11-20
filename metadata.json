@@ -1,0 +1,6 @@
+{
+  "name": "Windows 11 UI Concept",
+  "description": "Interactive Windows 11 Desktop UI Concept built with Fluent Design acrylic glass, draggable windows, Start Menu, Weather, and Light/Dark theme personalization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows 11 UI Concept</title>
+  <!-- Office UI Fabric Icons for Windows 11 system icons -->
+  <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css" />
+  <!-- jQuery & jQuery UI for draggable panels and animations -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/segoe-ui-4');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+
+    .container {
+      background-image: url('https://cdn.wallpaperhub.app/cloudcache/6/7/6/7/2/e/67672e59d11736a6035042a23791af5e5dcc9645.jpg');
+      background-color: #0b4f8a;
+      background-size: cover;
+      background-position: center;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-image 0.4s ease;
+    }
+
+    /* Dark mode support */
+    body.dark-mode .panel::after,
+    body.dark-mode .taskbar::after {
+      background-color: #202020;
+      opacity: 0.78;
+    }
+    body.dark-mode .panel,
+    body.dark-mode .noteBodyText,
+    body.dark-mode .header,
+    body.dark-mode .settingsItem,
+    body.dark-mode .taskbar,
+    body.dark-mode .startMenuContainer,
+    body.dark-mode .startMenuIconText,
+    body.dark-mode .startMenuRecommended-Text,
+    body.dark-mode .profileName,
+    body.dark-mode .settingsName {
+      color: #f3f3f3;
+    }
+    body.dark-mode .lightText {
+      color: #bbbbbb;
+    }
+    body.dark-mode .settingsSystemOption,
+    body.dark-mode .panel-left-day,
+    body.dark-mode .allAppsButton,
+    body.dark-mode .moreButton {
+      background-color: rgba(50, 50, 50, 0.55);
+      color: #fff;
+    }
+
+    .panel {
+      border-radius: 8px;
+      width: 700px;
+      max-width: 95vw;
+      height: 500px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+      position: fixed;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      overflow: hidden;
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      opacity: 0.75;
+      background-color: #f3f3f3;
+      border-radius: 8px;
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/59615/bg--acrylic-light.png");
+      transition: background-color 0.3s ease;
+    }
+
+    .panel .panel-right {
+      width: 240px;
+      background: rgba(255, 255, 255, 0);
+      opacity: 0.85;
+      position: absolute;
+      right: 0;
+      top: 35px;
+      height: 269px;
+      border-bottom-right-radius: 8px;
+      padding: 20px 30px;
+      text-align: right;
+    }
+
+    .panel .panel-left {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      padding: 50px 40px 0 40px;
+      pointer-events: none;
+    }
+
+    .panel-left-highlow-text {
+      opacity: 0.85;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+
+    .panel-left-locationdate-text {
+      opacity: 0.8;
+      font-size: 1rem;
+      margin-top: 5px;
+    }
+
+    .panel-left-day {
+      background-color: rgba(255, 255, 255, 0.45);
+      margin-left: -10px;
+      padding: 10px 14px;
+      width: 165px;
+      border-radius: 6px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .startMenuPanel {
+      bottom: 62px;
+      height: 620px;
+      width: 640px;
+      max-width: 95vw;
+    }
+
+    .startMenuContainer {
+      padding: 35px 50px 20px 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      position: relative;
+    }
+
+    .shutdownRow {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: rgba(180, 180, 180, 0.25);
+      border-top: 1px solid rgba(163, 163, 163, 0.45);
+      height: 68px;
+      display: flex;
+      align-items: center;
+    }
+
+    .profilePicture {
+      background-image: url('https://media-exp1.licdn.com/dms/image/C4E03AQFRViiHuMISHw/profile-displayphoto-shrink_100_100/0/1560275616234?e=1634169600&v=beta&t=WMfRRfR1ifCsWxHJtYN4Eow7j8B9fOLQ2rlBzIzbJsM');
+      background-color: #226cb1;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-size: cover;
+      position: absolute;
+      left: 55px;
+    }
+
+    .settingsPanelBody {
+      padding: 20px 30px;
+      overflow: visible !important;
+      position: relative;
+    }
+
+    .settingsPanel {
+      height: 580px;
+      width: 740px;
+    }
+
+    .settingsProfileRow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profilePicture-settings {
+      background-image: url('https://media-exp1.licdn.com/dms/image/C4E03AQFRViiHuMISHw/profile-displayphoto-shrink_100_100/0/1560275616234?e=1634169600&v=beta&t=WMfRRfR1ifCsWxHJtYN4Eow7j8B9fOLQ2rlBzIzbJsM');
+      background-color: #226cb1;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-size: cover;
+      display: inline-block;
+    }
+
+    .settingsName {
+      display: inline-block;
+      line-height: 1.2rem;
+      opacity: 0.9;
+      font-weight: 600;
+    }
+
+    .settingsLeftColumn {
+      padding: 20px 0;
+      width: 30%;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .settingsItem {
+      color: rgba(0, 0, 0, 0.85);
+      padding: 7px 12px;
+      border-radius: 4px;
+      margin-bottom: 2px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .settingsItem:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .settingsItem.active {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.45) 0%, rgba(210, 210, 210, 0.25) 100%);
+      border-left: 3px solid #226cb1;
+      font-weight: 600;
+    }
+
+    .settingsRightColumn {
+      width: 68%;
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
+      padding-top: 20px;
+    }
+
+    .themePreview {
+      background-image: url('https://www.bleepstatic.com/images/news/Microsoft/windows-11/leak/new-default-wallpaper.jpg');
+      background-size: cover;
+      width: 170px;
+      height: 105px;
+      border-radius: 6px;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      display: inline-block;
+      margin-left: 20px;
+      vertical-align: top;
+      transition: background-image 0.3s ease;
+    }
+
+    .themeSelect {
+      display: inline-block;
+      margin-left: 20px;
+      vertical-align: top;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .lightThemePick, .darkThemePick {
+      margin-top: 12px;
+      width: 96px;
+      height: 60px;
+      display: inline-block;
+      background-size: cover;
+      border-radius: 6px;
+      border: 3px solid rgba(255, 255, 255, 0.45);
+      background-repeat: no-repeat;
+      cursor: pointer;
+      margin-right: 8px;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .lightThemePick:hover, .darkThemePick:hover {
+      transform: scale(1.03);
+    }
+
+    .lightThemePick {
+      background-image: url('https://www.bleepstatic.com/images/news/Microsoft/windows-11/leak/new-default-wallpaper.jpg');
+    }
+
+    .darkThemePick {
+      background-image: url('https://cdn.vox-cdn.com/uploads/chorus_asset/file/22661965/img19.jpg');
+    }
+
+    .lightThemePick.active, .darkThemePick.active {
+      border: 3px solid #226cb1;
+    }
+
+    .systemIcon {
+      font-size: 1.6rem;
+      color: #226cb1;
+      vertical-align: middle;
+    }
+
+    .settingsSystemOption {
+      margin-top: 8px;
+      background-color: rgba(255, 255, 255, 0.5);
+      padding: 12px 16px;
+      border-radius: 6px;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .settingsSystemOption:hover {
+      background-color: rgba(255, 255, 255, 0.75);
+    }
+
+    .settingsOptions {
+      margin-left: 20px;
+      margin-top: 20px;
+    }
+
+    .settingsSystemOptionText {
+      display: inline-block;
+      margin-left: 15px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .profileName {
+      position: absolute;
+      left: 105px;
+      opacity: 0.9;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .powerButton {
+      font-size: 1.2rem;
+      opacity: 0.75;
+      position: absolute;
+      right: 50px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .powerButton:hover {
+      background: rgba(255, 255, 255, 0.4);
+      opacity: 1;
+    }
+
+    .iconRow {
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .startMenuIcon {
+      width: 16%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 8px 4px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .startMenuIcon:hover {
+      background-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .startMenuRecommended {
+      width: 48%;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .startMenuRecommended:hover {
+      background-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .startMenuRecommended-Icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .startMenuRecommended-Text {
+      opacity: 0.9;
+      font-size: 0.85rem;
+      margin-left: 12px;
+      line-height: 1.25;
+    }
+
+    .startMenuIcon-Inner {
+      width: 36px;
+      height: 36px;
+    }
+
+    .allAppsButton, .moreButton {
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 4px;
+      padding: 4px 10px;
+      text-align: center;
+      position: absolute;
+      right: 50px;
+      top: 32px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .startMenuIconText {
+      margin-top: 6px;
+      text-align: center;
+      font-size: 0.78rem;
+      white-space: nowrap;
+      opacity: 0.9;
+    }
+
+    .weatherPanel {
+      height: 400px;
+      width: 460px;
+    }
+
+    .cloud {
+      background-image: url("https://i.pinimg.com/originals/60/a8/2c/60a82c6cf7fda046b291e6b2c78ea531.png");
+      width: 380px;
+      height: 380px;
+      position: absolute;
+      background-size: contain;
+      background-repeat: no-repeat;
+      left: 185px;
+      top: 230px;
+      pointer-events: none;
+      -webkit-filter: drop-shadow(8px 8px 20px rgba(0, 0, 0, 0.3));
+      filter: drop-shadow(8px 8px 20px rgba(0, 0, 0, 0.3));
+    }
+
+    .weatherTemperature {
+      font-size: 4.5rem;
+      opacity: 0.85;
+      line-height: 4.5rem;
+      font-weight: 300;
+    }
+
+    .weatherTemperature small {
+      font-size: 1.5rem;
+      display: block;
+      margin-top: 8px;
+    }
+
+    .note-panel {
+      max-height: 500px;
+    }
+
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      width: 100vw;
+      height: 48px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      z-index: 1000;
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .taskbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      opacity: 0.72;
+      background-color: #f3f3f3;
+      background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/59615/bg--acrylic-light.png");
+    }
+
+    .taskbarTemp {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: -4px;
+      margin-right: 8px;
+      opacity: 0.85;
+    }
+
+    .taskbarIcon {
+      font-size: 1.5rem;
+      display: inline-block;
+    }
+
+    .taskbarTime {
+      display: inline-block;
+      position: absolute;
+      right: 18px;
+      font-size: 0.75rem;
+      text-align: right;
+      line-height: 1.15;
+    }
+
+    .taskbarIconWrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s linear, transform 0.1s ease;
+    }
+
+    .taskbarIconWrapper:active {
+      transform: scale(0.92);
+    }
+
+    .taskbarIconWrapper.active {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .taskbarIconWrapper.focused,
+    .taskbarIconWrapper:hover {
+      background-color: rgba(255, 255, 255, 0.55);
+    }
+
+    .taskbarIconIndicator {
+      position: absolute;
+      left: 12px;
+      width: 16px;
+      height: 3px;
+      bottom: 2px;
+      background-color: #226cb1;
+      border-radius: 2px;
+      transform-origin: center;
+      transition: transform 0.2s linear;
+    }
+
+    .taskbarIconIndicator.unfocused {
+      transform: scaleX(0.4);
+      background-color: #777;
+    }
+
+    .taskbarNoteIcon {
+      color: #123fbc;
+    }
+
+    .noteBodyText {
+      padding: 25px 50px;
+      color: #222222;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .noteBodyText ul {
+      padding-left: 20px;
+    }
+
+    .noteBodyText li {
+      margin-bottom: 8px;
+    }
+
+    .panel-body {
+      max-height: 465px;
+      overflow-y: auto;
+    }
+
+    .panel-body::-webkit-scrollbar-track {
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    .panel-body::-webkit-scrollbar {
+      width: 6px;
+      background-color: rgba(0, 0, 0, 0);
+    }
+
+    .panel-body::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.25);
+      border-radius: 3px;
+    }
+
+    .lightText {
+      color: #555555;
+      font-size: 0.8rem;
+    }
+
+    .header {
+      color: #444;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: move;
+    }
+
+    .header > .headerIcons {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: inline-flex;
+      font-size: 0.75rem;
+    }
+
+    .header > .headerIcons > i {
+      cursor: pointer;
+      transition: all 0.15s linear;
+      padding: 11px 15px;
+    }
+
+    .header > .headerIcons > i:hover {
+      color: #000;
+      background-color: rgba(255, 255, 255, 0.55);
+    }
+
+    .header > .headerIcons > i.ms-Icon--ChromeClose:hover {
+      background-color: #e81123;
+      color: #fff;
+    }
+
+    .headerTitleIcon {
+      font-size: 0.95rem;
+      margin-left: 14px;
+      color: #123fbc;
+    }
+
+    .headerTitleText {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .headerImage {
+      background-image: url('https://www.bleepstatic.com/images/news/Microsoft/windows-11/leak/new-default-wallpaper.jpg');
+      background-color: #106ebe;
+      width: 100%;
+      height: 240px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+    }
+
+    .headerImageOverlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.3rem;
+      font-weight: 400;
+      text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.45);
+      background-color: rgba(4, 27, 104, 0.15);
+      width: 100%;
+      height: 100%;
+    }
+
+    .mt30 { margin-top: 30px; }
+    .mt20 { margin-top: 20px; }
+
+    .zindex0 { z-index: 10; }
+    .zindex1 { z-index: 20; }
+    .zindex2 { z-index: 30; }
+    .zindex3 { z-index: 40; }
+
+    /* Shutdown overlay */
+    #shutdownScreen {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      color: #fff;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-size: 1.4rem;
+      gap: 20px;
+    }
+    .restartBtn {
+      padding: 10px 24px;
+      background: #0078d4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .restartBtn:hover {
+      background: #106ebe;
+    }
+  </style>
+</head>
+<body>
+
+<div id="shutdownScreen">
+  <div>Shutting down Windows 11...</div>
+  <button class="restartBtn" onclick="RestartOS()">Turn Power On</button>
+</div>
+
+<div class="container">
+  <!-- WEATHER PANEL -->
+  <div class="panel weatherPanel" onmousedown="FocusWindow('weather')" style="display:none;" id="weatherPanel">
+    <div class="header noselect">
+      <span class="lightText"><i class="ms-Icon ms-Icon--CloudWeather headerTitleIcon" aria-hidden="true"></i><span class="headerTitleText"> Weather</span></span>
+      <div class="headerIcons">
+        <i class="ms-Icon ms-Icon--ChromeMinimize" aria-hidden="true" onClick="MinimizeWindow('weather')"></i>
+        <i class="ms-Icon ms-Icon--ChromeClose" aria-hidden="true" onClick="CloseWindow('weather')"></i>
+      </div>
+    </div>
+    <div class="panel-inner">
+      <div class="panel-left">
+        <div class="panel-left-highlow-text">
+          High 74° F <br />
+          Low 57° F<br />
+        </div>
+        <div class="panel-left-locationdate-text">
+          Ann Arbor, Michigan<br /><br />
+        </div>
+        <div class="panel-left-day">
+          <span>Tomorrow 74°</span> <i class="ms-Icon ms-Icon--Sunny" style="color:#f59e0b;" aria-hidden="true"></i>
+        </div>
+        <div class="panel-left-day">
+          <span>Wednesday 72°</span> <i class="ms-Icon ms-Icon--Rain" style="color:#0284c7;" aria-hidden="true"></i>
+        </div>
+        <div class="panel-left-day">
+          <span>Thursday 72°</span> <i class="ms-Icon ms-Icon--Fog" style="color:#64748b;" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+    <div class="panel-right">
+      <div class="weatherTemperature">65° F<small>Cloudy</small></div>
+    </div>
+    <div class="cloud"></div>
+  </div>
+
+  <!-- START MENU PANEL -->
+  <div class="panel startMenuPanel noselect" style="display:none" id="startMenuPanel">
+    <div class="startMenuContainer">
+      Pinned
+      <div class="allAppsButton">
+        <small style="opacity: .85">All apps &gt;</small>
+      </div>
+    </div>
+    <div class="iconRow">
+      <div class="startMenuIcon">
+        <svg class="startMenuIcon-Inner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+          <defs>
+            <radialGradient id="b" cx="161.83" cy="68.91" r="95.38" gradientTransform="matrix(1 0 0 -.95 0 248.84)" gradientUnits="userSpaceOnUse">
+              <stop offset=".72" stop-opacity="0" />
+              <stop offset=".95" stop-opacity=".53" />
+              <stop offset="1" />
+            </radialGradient>
+            <radialGradient id="d" cx="-340.29" cy="62.99" r="143.24" gradientTransform="matrix(.15 -.99 -.8 -.12 176.64 -125.4)" gradientUnits="userSpaceOnUse">
+              <stop offset=".76" stop-opacity="0" />
+              <stop offset=".95" stop-opacity=".5" />
+              <stop offset="1" />
+            </radialGradient>
+            <radialGradient id="e" cx="113.37" cy="570.21" r="202.43" gradientTransform="matrix(-.04 1 2.13 .08 -1179.54 -106.69)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#35c1f1" />
+              <stop offset=".11" stop-color="#34c1ed" />
+              <stop offset=".23" stop-color="#2fc2df" />
+              <stop offset=".31" stop-color="#2bc3d2" />
+              <stop offset=".67" stop-color="#36c752" />
+            </radialGradient>
+            <radialGradient id="f" cx="376.52" cy="567.97" r="97.34" gradientTransform="matrix(.28 .96 .78 -.23 -303.76 -148.5)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#66eb6e" />
+              <stop offset="1" stop-color="#66eb6e" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="a" x1="63.33" y1="84.03" x2="241.67" y2="84.03" gradientTransform="matrix(1 0 0 -1 0 266)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#0c59a4" />
+              <stop offset="1" stop-color="#114a8b" />
+            </linearGradient>
+            <linearGradient id="c" x1="157.35" y1="161.39" x2="45.96" y2="40.06" gradientTransform="matrix(1 0 0 -1 0 266)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#1b9de2" />
+              <stop offset=".16" stop-color="#1595df" />
+              <stop offset=".67" stop-color="#0680d7" />
+              <stop offset="1" stop-color="#0078d4" />
+            </linearGradient>
+          </defs>
+          <path d="M235.68 195.46a93.73 93.73 0 01-10.54 4.71 101.87 101.87 0 01-35.9 6.46c-47.32 0-88.54-32.55-88.54-74.32A31.48 31.48 0 01117.13 105c-42.8 1.8-53.8 46.4-53.8 72.53 0 73.88 68.09 81.37 82.76 81.37 7.91 0 19.84-2.3 27-4.56l1.31-.44a128.34 128.34 0 0066.6-52.8 4 4 0 00-5.32-5.64z" transform="translate(-4.63 -4.92)" fill="url(#a)" />
+          <path d="M235.68 195.46a93.73 93.73 0 01-10.54 4.71 101.87 101.87 0 01-35.9 6.46c-47.32 0-88.54-32.55-88.54-74.32A31.48 31.48 0 01117.13 105c-42.8 1.8-53.8 46.4-53.8 72.53 0 73.88 68.09 81.37 82.76 81.37 7.91 0 19.84-2.3 27-4.56l1.31-.44a128.34 128.34 0 0066.6-52.8 4 4 0 00-5.32-5.64z" transform="translate(-4.63 -4.92)" style="isolation:isolate" opacity=".35" fill="url(#b)" />
+          <path d="M110.34 246.34A79.2 79.2 0 0187.6 225a80.72 80.72 0 0129.53-120c3.12-1.47 8.45-4.13 15.54-4a32.35 32.35 0 0125.69 13 31.88 31.88 0 016.36 18.66c0-.21 24.46-79.6-80-79.6-43.9 0-80 41.66-80 78.21a130.15 130.15 0 0012.11 56 128 128 0 00156.38 67.11 75.55 75.55 0 01-62.78-8z" transform="translate(-4.63 -4.92)" fill="url(#c)" />
+          <path d="M110.34 246.34A79.2 79.2 0 0187.6 225a80.72 80.72 0 0129.53-120c3.12-1.47 8.45-4.13 15.54-4a32.35 32.35 0 0125.69 13 31.88 31.88 0 016.36 18.66c0-.21 24.46-79.6-80-79.6-43.9 0-80 41.66-80 78.21a130.15 130.15 0 0012.11 56 128 128 0 00156.38 67.11 75.55 75.55 0 01-62.78-8z" transform="translate(-4.63 -4.92)" style="isolation:isolate" opacity=".41" fill="url(#d)" />
+          <path d="M156.94 153.78c-.81 1.05-3.3 2.5-3.3 5.66 0 2.61 1.7 5.12 4.72 7.23 14.38 10 41.49 8.68 41.56 8.68a59.56 59.56 0 0030.27-8.35 61.38 61.38 0 0030.43-52.88c.26-22.41-8-37.31-11.34-43.91-21.19-41.45-66.93-65.29-116.67-65.29a128 128 0 00-128 126.2c.48-36.54 36.8-66.05 80-66.05 3.5 0 23.46.34 42 10.07 16.34 8.58 24.9 18.94 30.85 29.21 6.18 10.67 7.28 24.15 7.28 29.52s-2.74 13.33-7.8 19.91z" transform="translate(-4.63 -4.92)" fill="url(#e)" />
+          <path d="M156.94 153.78c-.81 1.05-3.3 2.5-3.3 5.66 0 2.61 1.7 5.12 4.72 7.23 14.38 10 41.49 8.68 41.56 8.68a59.56 59.56 0 0030.27-8.35 61.38 61.38 0 0030.43-52.88c.26-22.41-8-37.31-11.34-43.91-21.19-41.45-66.93-65.29-116.67-65.29a128 128 0 00-128 126.2c.48-36.54 36.8-66.05 80-66.05 3.5 0 23.46.34 42 10.07 16.34 8.58 24.9 18.94 30.85 29.21 6.18 10.67 7.28 24.15 7.28 29.52s-2.74 13.33-7.8 19.91z" transform="translate(-4.63 -4.92)" fill="url(#f)" />
+        </svg>
+        <div class="startMenuIconText">Edge</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/word_48x1.svg" width="36" height="36" alt="Word" />
+        <div class="startMenuIconText">Word</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/excel_48x1.svg" width="36" height="36" alt="Excel" />
+        <div class="startMenuIconText">Excel</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/powerpoint_48x1.svg" width="36" height="36" alt="PowerPoint" />
+        <div class="startMenuIconText">PowerPoint</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/outlook_48x1.svg" width="36" height="36" alt="Outlook" />
+        <div class="startMenuIconText">Outlook</div>
+      </div>
+      <div class="startMenuIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="36px" height="36px">
+          <path fill="#1976d2" d="M28,13h14.533C43.343,13,44,13.657,44,14.467v19.066C44,34.343,43.343,35,42.533,35H28V13z" />
+          <rect width="14" height="15.542" x="28" y="17.958" fill="#fff" />
+          <polygon fill="#1976d2" points="27,44 4,39.5 4,8.5 27,4" />
+          <path fill="#fff" d="M15.25,16.5c-3.176,0-5.75,3.358-5.75,7.5s2.574,7.5,5.75,7.5S21,28.142,21,24 S18.426,16.5,15.25,16.5z M15,28.5c-1.657,0-3-2.015-3-4.5s1.343-4.5,3-4.5s3,2.015,3,4.5S16.657,28.5,15,28.5z" />
+          <rect width="2.7" height="2.9" x="28.047" y="29.737" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="31.448" y="29.737" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="34.849" y="29.737" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="28.047" y="26.159" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="31.448" y="26.159" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="34.849" y="26.159" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="38.25" y="26.159" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="28.047" y="22.706" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="31.448" y="22.706" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="34.849" y="22.706" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="38.25" y="22.706" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="31.448" y="19.112" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="34.849" y="19.112" fill="#1976d2" />
+          <rect width="2.7" height="2.9" x="38.25" y="19.112" fill="#1976d2" />
+        </svg>
+        <div class="startMenuIconText">Calendar</div>
+      </div>
+    </div>
+
+    <div class="iconRow mt20">
+      <div class="startMenuIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="36px" height="36px">
+          <radialGradient id="2Jwv7LuZrao5GsFL~0k11a" cx="24" cy="18.435" r="40.735" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#dfe9f2" />
+            <stop offset=".543" stop-color="#d6e0e9" />
+            <stop offset="1" stop-color="#bfc8d1" />
+          </radialGradient>
+          <path fill="url(#2Jwv7LuZrao5GsFL~0k11a)" d="M44,24c0,4.37-1.4,8.41-3.79,11.7c-0.66,0.93-1.41,1.8-2.23,2.59C34.37,41.82,29.44,44,24,44 s-10.37-2.18-13.98-5.71C9.2,37.5,8.45,36.63,7.79,35.7C5.4,32.41,4,28.37,4,24c0-5.69,2.37-10.81,6.18-14.45 c1-0.96,2.1-1.81,3.28-2.54C16.52,5.1,20.13,4,24,4s7.48,1.1,10.54,3.01c1.18,0.73,2.28,1.58,3.28,2.54C41.63,13.19,44,18.31,44,24z" />
+          <radialGradient id="2Jwv7LuZrao5GsFL~0k11b" cx="23.891" cy="14.717" r="19.79" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#4caf50" />
+            <stop offset=".489" stop-color="#4aaf50" />
+            <stop offset=".665" stop-color="#43ad50" />
+            <stop offset=".79" stop-color="#38aa50" />
+            <stop offset=".892" stop-color="#27a550" />
+            <stop offset=".978" stop-color="#11a050" />
+            <stop offset="1" stop-color="#0a9e50" />
+          </radialGradient>
+          <path fill="url(#2Jwv7LuZrao5GsFL~0k11b)" d="M40.21,35.7c-0.66,0.93-1.41,1.8-2.23,2.59c-0.07-0.61-0.31-2.47-0.98-3.79 c-1.5-3-8-11-13-14.5c-5,3.5-11.5,11.5-13,14.5c-0.67,1.32-0.91,3.18-0.98,3.79C9.2,37.5,8.45,36.63,7.79,35.7 C7.76,35.08,7.8,34.2,8,33c0.74-4.47,8.5-16,11-18c-3.4-3.4-6.8-4.91-8.82-5.45c1-0.96,2.1-1.81,3.28-2.54 C19.15,7.1,22.05,9.03,24,10c1.95-0.97,4.85-2.9,10.54-2.99c1.18,0.73,2.28,1.58,3.28,2.54C35.8,10.09,32.4,11.6,29,15 c2.5,2,10.26,13.53,11,18C40.2,34.2,40.24,35.08,40.21,35.7z" />
+        </svg>
+        <div class="startMenuIconText">Xbox</div>
+      </div>
+      <div class="startMenuIcon">
+        <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="36px" height="36px">
+          <path d="M 25 4 L 4 17.34375 L 4 32.652344 L 25 46 L 46 32.65625 L 46 17.34375 Z M 25 29.183594 L 19.066406 25.070313 L 25 21.023438 L 30.933594 25.070313 Z M 27 17.605469 L 27 9.949219 L 40.429688 18.484375 L 34.410156 22.65625 Z M 23 17.605469 L 15.589844 22.65625 L 9.570313 18.484375 L 23 9.949219 Z M 12.09375 25.042969 L 8 27.832031 L 8 22.203125 Z M 15.570313 27.453125 L 23 32.605469 L 23 40.050781 L 9.589844 31.527344 Z M 27 32.605469 L 34.429688 27.453125 L 40.410156 31.527344 L 27 40.050781 Z M 37.90625 25.042969 L 42 22.203125 L 42 27.832031 Z" />
+        </svg>
+        <div class="startMenuIconText">CodePen</div>
+      </div>
+      <div class="startMenuIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 42" width="36px" height="36px">
+          <path fill="#424242" d="M42,37c0,2.762-2.238,5-5,5H11c-2.761,0-5-2.238-5-5V11c0-2.762,2.239-5,5-5h26c2.762,0,5,2.238,5,5 V37z" />
+          <path fill="#b71c1c" d="M31,12h-5v23.5c2.5,0,4.986,0.512,5,0.5S31,12,31,12z" />
+          <path fill="#b71c1c" d="M17,12h5v23.5c-2.5,0-4.986,0.512-5,0.5S17,12,17,12z" />
+          <path fill="#e53935" d="M22,12h-5l9,23.5c2.5,0,4.986,0.512,5,0.5S22,12,22,12z" />
+        </svg>
+        <div class="startMenuIconText">Netflix</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/teams_48x1.svg" width="36" height="36" alt="Teams" />
+        <div class="startMenuIconText">Teams</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/access_48x1.svg" width="36" height="36" alt="Access" />
+        <div class="startMenuIconText">Access</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/office_48x1.svg" width="36" height="36" alt="Office" />
+        <div class="startMenuIconText">Office</div>
+      </div>
+    </div>
+
+    <div class="iconRow mt20">
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/onedrive_48x1.svg" width="36" height="36" alt="OneDrive" />
+        <div class="startMenuIconText">OneDrive</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/onenote_48x1.svg" width="36" height="36" alt="OneNote" />
+        <div class="startMenuIconText">OneNote</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/project_48x1.svg" width="36" height="36" alt="Project" />
+        <div class="startMenuIconText">Project</div>
+      </div>
+      <div class="startMenuIcon">
+        <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/sharepoint_48x1.svg" width="36" height="36" alt="SharePoint" />
+        <div class="startMenuIconText">SharePoint</div>
+      </div>
+      <div class="startMenuIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="36px" height="36px">
+          <linearGradient id="tS~Tu1dsT5kMXF2Lct~HUa" x1="24.001" x2="24.001" y1="-4.765" y2="56.31" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#4caf50" />
+            <stop offset="1" stop-color="#0a9e50" />
+          </linearGradient>
+          <path fill="url(#tS~Tu1dsT5kMXF2Lct~HUa)" d="M24.001,4c-11.077,0-20,8.923-20,20s8.923,20,20,20c11.076,0,20-8.923,20-20 S35.077,4,24.001,4z" />
+          <path fill="#fff" d="M31.747,33.915c-0.292,0-0.585-0.145-0.877-0.292c-2.777-1.607-6.139-2.484-9.792-2.484 c-2.047,0-4.093,0.291-5.993,0.73c-0.292,0-0.731,0.146-0.877,0.146c-0.731,0-1.169-0.586-1.169-1.17 c0-0.73,0.438-1.17,1.023-1.314c2.338-0.586,4.677-0.877,7.161-0.877c4.093,0,7.893,1.021,11.108,2.924 c0.438,0.291,0.731,0.584,0.731,1.314C32.916,33.478,32.331,33.915,31.747,33.915z M33.793,28.945c-0.438,0-0.73-0.144-1.023-0.291 c-3.068-1.9-7.308-3.071-12.13-3.071c-2.339,0-4.531,0.293-6.139,0.733c-0.439,0.144-0.585,0.144-0.877,0.144 c-0.877,0-1.462-0.73-1.462-1.461c0-0.877,0.439-1.316,1.169-1.607c2.192-0.584,4.385-1.023,7.454-1.023 c4.97,0,9.793,1.17,13.593,3.507c0.584,0.291,0.877,0.877,0.877,1.461C35.255,28.215,34.67,28.945,33.793,28.945z M36.132,23.101 c-0.438,0-0.585-0.146-1.023-0.291c-3.508-2.047-8.769-3.217-13.885-3.217c-2.631,0-5.262,0.293-7.6,0.877 c-0.293,0-0.585,0.146-1.023,0.146c-1.023,0.146-1.754-0.73-1.754-1.754c0-1.023,0.585-1.607,1.315-1.754 c2.777-0.877,5.7-1.17,9.062-1.17c5.554,0,11.4,1.17,15.785,3.654c0.584,0.293,1.022,0.877,1.022,1.754 C37.886,22.369,37.154,23.101,36.132,23.101z" />
+        </svg>
+        <div class="startMenuIconText">Spotify</div>
+      </div>
+      <div class="startMenuIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="36px" height="36px">
+          <path fill="#03A9F4" d="M6,10c0-2.209,1.791-4,4-4h28c2.209,0,4,1.791,4,4v28c0,2.209-1.791,4-4,4H10c-2.209,0-4-1.791-4-4V10z" />
+          <path fill="#020F16" d="M20.016,19.174h-2.002v4.434h1.973c0.547,0,0.97-0.179,1.27-0.537s0.449-0.879,0.449-1.563c0-0.71-0.153-1.274-0.459-1.694S20.53,19.181,20.016,19.174z" />
+          <path fill="#020F16" d="M9,9v30h30V9H9z M23.365,24.789C22.539,25.597,21.393,26,19.928,26h-1.914v5h-2.871V16.781h4.844c1.406,0,2.528,0.437,3.364,1.309s1.255,2.005,1.255,3.398S24.192,23.981,23.365,24.789z M32.682,30.336c-0.709,0.573-1.641,0.859-2.793,0.859c-0.775,0-1.459-0.151-2.051-0.454s-1.057-0.725-1.392-1.265s-0.503-1.123-0.503-1.748h2.627c0.014,0.481,0.125,0.843,0.337,1.084s0.558,0.361,1.04,0.361c0.742,0,1.113-0.335,1.113-1.006c0-0.234-0.112-0.451-0.337-0.649S30,27.052,29.225,26.713c-1.139-0.462-1.922-0.94-2.349-1.436s-0.64-1.11-0.64-1.846c0-0.925,0.334-1.688,1.001-2.29s1.552-0.903,2.651-0.903c1.158,0,2.086,0.3,2.783,0.898s1.045,1.403,1.045,2.412h-2.764c0-0.859-0.357-1.289-1.074-1.289c-0.293,0-0.533,0.091-0.723,0.273s-0.283,0.437-0.283,0.762c0,0.234,0.104,0.441,0.313,0.62s0.699,0.435,1.475,0.767c1.127,0.417,1.922,0.881,2.388,1.392s0.698,1.174,0.698,1.987C33.746,29.005,33.391,29.763,32.682,30.336z" />
+        </svg>
+        <div class="startMenuIconText">Photoshop</div>
+      </div>
+    </div>
+
+    <div class="startMenuContainer mt30">
+      Recommended
+      <div class="moreButton">
+        <small style="opacity: .85">More &gt;</small>
+      </div>
+    </div>
+    <div class="iconRow">
+      <div class="startMenuRecommended">
+        <div class="startMenuRecommended-Icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32px" height="32px">
+            <path fill="#03A9F4" d="M6,10c0-2.209,1.791-4,4-4h28c2.209,0,4,1.791,4,4v28c0,2.209-1.791,4-4,4H10c-2.209,0-4-1.791-4-4V10z" />
+            <path fill="#020F16" d="M9,9v30h30V9H9z M23.365,24.789C22.539,25.597,21.393,26,19.928,26h-1.914v5h-2.871V16.781h4.844c1.406,0,2.528,0.437,3.364,1.309s1.255,2.005,1.255,3.398S24.192,23.981,23.365,24.789z" />
+          </svg>
+        </div>
+        <div class="startMenuRecommended-Text">
+          <strong>Adobe Photoshop</strong> <br /> <span class="lightText">Recently added</span>
+        </div>
+      </div>
+      <div class="startMenuRecommended">
+        <div class="startMenuRecommended-Icon">
+          <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/excel_48x1.svg" width="32" height="32" alt="Excel" />
+        </div>
+        <div class="startMenuRecommended-Text">
+          <strong>2021 Monthly Expenses</strong> <br /> <span class="lightText">17m ago</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="iconRow mt20">
+      <div class="startMenuRecommended">
+        <div class="startMenuRecommended-Icon">
+          <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="32px" height="32px">
+            <path d="M 25 4 L 4 17.34375 L 4 32.652344 L 25 46 L 46 32.65625 L 46 17.34375 Z M 25 29.183594 L 19.066406 25.070313 L 25 21.023438 L 30.933594 25.070313 Z" />
+          </svg>
+        </div>
+        <div class="startMenuRecommended-Text">
+          <strong>Windows 11 Fluent Design</strong> <br /> <span class="lightText">2h ago</span>
+        </div>
+      </div>
+      <div class="startMenuRecommended">
+        <div class="startMenuRecommended-Icon">
+          <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/word_48x1.svg" width="32" height="32" alt="Word" />
+        </div>
+        <div class="startMenuRecommended-Text">
+          <strong>Never Gonna Give You Up</strong><br /> <span class="lightText">12h ago</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shutdownRow">
+      <div class="profilePicture"></div>
+      <div class="profileName">Josh Salazar</div>
+      <div class="powerButton" title="Shut down" onclick="ShutdownOS()">
+        <i class="ms-Icon ms-Icon--PowerButton" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- WELCOME NOTE PANEL -->
+  <div class="panel note-panel zindex0" id="welcomenote" onmousedown="FocusWindow('welcome')">
+    <div class="header noselect">
+      <span><i class="ms-Icon ms-Icon--QuickNoteSolid headerTitleIcon" aria-hidden="true"></i><span class="headerTitleText">Welcome</span></span>
+      <div class="headerIcons">
+        <i class="ms-Icon ms-Icon--ChromeMinimize" aria-hidden="true" onClick="MinimizeWindow('welcome')"></i>
+        <i class="ms-Icon ms-Icon--ChromeRestore" aria-hidden="true"></i>
+        <i class="ms-Icon ms-Icon--ChromeClose" aria-hidden="true" onClick="CloseWindow('welcome')"></i>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="headerImage noselect">
+        <div class="headerImageOverlay">
+          <svg xmlns="http://www.w3.org/2000/svg" width="44px" height="44px" viewBox="0 0 443.704 443.704">
+            <path style="fill:#ffffff;" d="M 227.570313 307.621094 L 227.570313 387.675781 L 387.675781 387.675781 L 387.675781 227.570313 L 227.570313 227.570313 Z M 56.03125 307.621094 L 56.03125 387.675781 L 216.132813 387.675781 L 216.132813 227.570313 L 56.03125 227.570313 Z M 227.570313 136.082031 L 227.570313 216.132813 L 387.675781 216.132813 L 387.675781 56.03125 L 227.570313 56.03125 Z M 56.03125 136.082031 L 56.03125 216.132813 L 216.132813 216.132813 L 216.132813 56.03125 L 56.03125 56.03125 Z" />
+          </svg>
+          &nbsp;Windows 11
+        </div>
+      </div>
+      <div class="noteBodyText">
+        <p>Welcome to my build of the Windows 11 UI. I tried my best to recreate the Windows 11 UI based on the Fluent Design documentation and the recently released Windows 11 preview video. Have fun and play around!</p>
+        <p>Here are some things you can explore:</p>
+        <ul>
+          <li>Check the weather by clicking the cloud icon in the taskbar.</li>
+          <li>Open the Windows Start menu via the blue Windows logo.</li>
+          <li>Drag windows around by their headers, close them, or minimize them. Window states and z-indexes update dynamically.</li>
+          <li>Open <strong>Settings</strong> from the taskbar and switch between <strong>Light</strong> and <strong>Dark</strong> themes!</li>
+          <li>Click the <strong>Power button</strong> in the Start Menu to shut down the system.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS PANEL -->
+  <div class="panel settingsPanel" id="settingswindow" onmousedown="FocusWindow('settings')" style="display:none;">
+    <div class="header noselect">
+      <span><i class="ms-Icon ms-Icon--Settings headerTitleIcon" aria-hidden="true"></i><span class="headerTitleText">Settings</span></span>
+      <div class="headerIcons">
+        <i class="ms-Icon ms-Icon--ChromeMinimize" aria-hidden="true" onClick="MinimizeWindow('settings')"></i>
+        <i class="ms-Icon ms-Icon--ChromeRestore" aria-hidden="true"></i>
+        <i class="ms-Icon ms-Icon--ChromeClose" aria-hidden="true" onClick="CloseWindow('settings')"></i>
+      </div>
+    </div>
+    <div class="panel-body settingsPanelBody noselect">
+      <div class="settingsProfileRow">
+        <div class="profilePicture-settings"></div>
+        <div class="settingsName">
+          Josh Salazar <br /> <small class="lightText">joshua.a.salazar@gmail.com</small>
+        </div>
+      </div>
+
+      <div class="settingsLeftColumn">
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--System" aria-hidden="true"></i> System</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--InternetSharing" aria-hidden="true"></i> Bluetooth</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--Globe" aria-hidden="true"></i> Network &amp; internet</div>
+        <div class="settingsItem active"><i class="ms-Icon ms-Icon--Brush" aria-hidden="true"></i> Personalization</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--AppIconDefaultAdd" aria-hidden="true"></i> Apps</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--People" aria-hidden="true"></i> Account</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--Clock" aria-hidden="true"></i> Time &amp; language</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--Game" aria-hidden="true"></i> Gaming</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--EaseOfAccess" aria-hidden="true"></i> Accessibility</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--Shield" aria-hidden="true"></i> Privacy &amp; security</div>
+        <div class="settingsItem"><i class="ms-Icon ms-Icon--Sync" aria-hidden="true"></i> Windows update</div>
+      </div>
+      <div class="settingsRightColumn">
+        <div>
+          <div class="themePreview" id="themePreviewBox"></div>
+          <div class="themeSelect">
+            Select a theme to apply<br />
+            <div class="lightThemePick active" id="lightPick" onclick="SetTheme('light')" title="Windows Light"></div>
+            <div class="darkThemePick" id="darkPick" onclick="SetTheme('dark')" title="Windows Dark"></div>
+          </div>
+        </div>
+        <div class="settingsOptions">
+          <div class="settingsSystemOption">
+            <i class="ms-Icon ms-Icon--PhotoCollection systemIcon" aria-hidden="true"></i>
+            <div class="settingsSystemOptionText">
+              Background <br />
+              <small class="lightText">Background image, color, slideshow</small>
+            </div>
+          </div>
+          <div class="settingsSystemOption">
+            <i class="ms-Icon ms-Icon--Color systemIcon" aria-hidden="true"></i>
+            <div class="settingsSystemOptionText">
+              Colors <br />
+              <small class="lightText">Accent color, transparency effects, color theme</small>
+            </div>
+          </div>
+          <div class="settingsSystemOption">
+            <i class="ms-Icon ms-Icon--Lock systemIcon" aria-hidden="true"></i>
+            <div class="settingsSystemOptionText">
+              Lock screen <br />
+              <small class="lightText">Lock screen images, apps, animations</small>
+            </div>
+          </div>
+          <div class="settingsSystemOption">
+            <i class="ms-Icon ms-Icon--Brush systemIcon" aria-hidden="true"></i>
+            <div class="settingsSystemOptionText">
+              Themes <br />
+              <small class="lightText">Install, create, manage</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TASKBAR -->
+<div class="taskbar noselect">
+  <div class="taskbarIconWrapper" id="startmenuTaskbarIcon" onClick="TaskbarIconClick('startMenu')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 443.704 443.704">
+      <path style="fill:#0078d4;" d="M 227.570313 307.621094 L 227.570313 387.675781 L 387.675781 387.675781 L 387.675781 227.570313 L 227.570313 227.570313 Z M 56.03125 307.621094 L 56.03125 387.675781 L 216.132813 387.675781 L 216.132813 227.570313 L 56.03125 227.570313 Z M 227.570313 136.082031 L 227.570313 216.132813 L 387.675781 216.132813 L 387.675781 56.03125 L 227.570313 56.03125 Z M 56.03125 136.082031 L 56.03125 216.132813 L 216.132813 216.132813 L 216.132813 56.03125 L 56.03125 56.03125 Z" />
+    </svg>
+  </div>
+  <div class="taskbarIconWrapper" id="settingsTaskbarIcon" onClick="TaskbarIconClick('settings')">
+    <i class="ms-Icon ms-Icon--Settings taskbarIcon taskbarItem" aria-hidden="true"></i>
+    <div class="taskbarIconIndicator" style="display:none;" id="settingsTaskbarIndicator"></div>
+  </div>
+  <div class="taskbarIconWrapper">
+    <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/word_48x1.svg" width="26" height="26" alt="Word" />
+  </div>
+  <div class="taskbarIconWrapper">
+    <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/powerpoint_48x1.svg" width="26" height="26" alt="PowerPoint" />
+  </div>
+  <div class="taskbarIconWrapper">
+    <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/excel_48x1.svg" width="26" height="26" alt="Excel" />
+  </div>
+  <div class="taskbarIconWrapper">
+    <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/office_48x1.svg" width="26" height="26" alt="Office" />
+  </div>
+  <div class="taskbarIconWrapper">
+    <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/outlook_48x1.svg" width="26" height="26" alt="Outlook" />
+  </div>
+  <div class="taskbarIconWrapper">
+    <img src="https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/teams_48x1.svg" width="26" height="26" alt="Teams" />
+  </div>
+  <div class="taskbarIconWrapper active focused" id="noteTaskbarIcon" onClick="TaskbarIconClick('welcome')">
+    <i class="ms-Icon ms-Icon--QuickNoteSolid taskbarIcon taskbarItem taskbarNoteIcon" aria-hidden="true"></i>
+    <div class="taskbarIconIndicator" id="noteTaskbarIndicator"></div>
+  </div>
+  <div class="taskbarIconWrapper" id="weatherTaskbarIcon" onClick="TaskbarIconClick('weather')">
+    <i class="ms-Icon ms-Icon--CloudWeather taskbarIcon taskbarItem" aria-hidden="true"></i>
+    <div class="taskbarIconIndicator" style="display:none;" id="weatherTaskbarIndicator"></div>
+  </div>
+  <div class="taskbarTemp">65°</div>
+  <div class="taskbarTime"></div>
+</div>
+
+<script>
+  var windows = [
+    {
+      name: "welcome",
+      isOpen: true,
+      isMinimized: false,
+      hasFocus: true,
+      taskbarid: "#noteTaskbarIcon",
+      taskbarindicator: "#noteTaskbarIndicator",
+      windowid: "#welcomenote"
+    },
+    {
+      name: "settings",
+      isOpen: false,
+      isMinimized: false,
+      hasFocus: false,
+      taskbarid: "#settingsTaskbarIcon",
+      taskbarindicator: "#settingsTaskbarIndicator",
+      windowid: "#settingswindow"
+    },
+    {
+      name: "weather",
+      isOpen: false,
+      isMinimized: false,
+      hasFocus: false,
+      taskbarid: "#weatherTaskbarIcon",
+      taskbarindicator: "#weatherTaskbarIndicator",
+      windowid: "#weatherPanel"
+    },
+    {
+      name: "startMenu",
+      isOpen: false,
+      isMinimized: false,
+      hasFocus: false,
+      taskbarid: "#startmenuTaskbarIcon",
+      taskbarindicator: "",
+      windowid: "#startMenuPanel"
+    }
+  ];
+
+  var openedWindows = [windows[0]];
+
+  // Make panels draggable by their headers
+  $(".panel").draggable({
+    appendTo: "body",
+    handle: ".header",
+    containment: "window"
+  });
+
+  function FocusWindow(windowToFocus) {
+    var object = windows.find(obj => obj.name === windowToFocus);
+    if (!object) return;
+
+    object.isOpen = true;
+    object.isMinimized = false;
+    object.hasFocus = true;
+
+    openedWindows = openedWindows.filter(obj => obj.name !== object.name);
+    openedWindows.push(object);
+
+    UpdateTaskBar();
+    UpdateZIndex();
+  }
+
+  function CloseWindow(windowToClose) {
+    var object = windows.find(obj => obj.name === windowToClose);
+    if (!object) return;
+
+    $(object.windowid).fadeOut(180);
+    object.isOpen = false;
+    object.isMinimized = false;
+    object.hasFocus = false;
+
+    openedWindows = openedWindows.filter(obj => obj.name !== object.name);
+    UpdateTaskBar();
+    UpdateZIndex();
+  }
+
+  function MinimizeWindow(windowToClose) {
+    var object = windows.find(obj => obj.name === windowToClose);
+    if (!object) return;
+
+    $(object.windowid).effect("drop", { direction: "down" }, 200);
+    object.isOpen = true;
+    object.isMinimized = true;
+    object.hasFocus = false;
+
+    openedWindows = openedWindows.filter(obj => obj.name !== object.name);
+    UpdateTaskBar();
+    UpdateZIndex();
+  }
+
+  function TaskbarIconClick(clickedIcon) {
+    var object = windows.find(obj => obj.name === clickedIcon);
+    if (!object) return;
+
+    if (object.name === "startMenu") {
+      if (object.isOpen) {
+        $(object.windowid).toggle("drop", { direction: "down" }, 180);
+        object.isOpen = false;
+        object.isMinimized = false;
+        object.hasFocus = false;
+        openedWindows = openedWindows.filter(obj => obj.name !== "startMenu");
+      } else {
+        $(object.windowid).toggle("drop", { direction: "down" }, 180);
+        object.isOpen = true;
+        object.isMinimized = false;
+        object.hasFocus = true;
+        openedWindows.push(object);
+      }
+    } else {
+      // Close Start menu if open
+      if (windows[3].isOpen) {
+        $(windows[3].windowid).toggle("drop", { direction: "down" }, 180);
+        windows[3].isOpen = false;
+        windows[3].isMinimized = false;
+        windows[3].hasFocus = false;
+        openedWindows = openedWindows.filter(obj => obj.name !== "startMenu");
+      }
+
+      if (object.isOpen) {
+        if (object.isMinimized) {
+          $(object.windowid).toggle("drop", { direction: "down" }, 200);
+          object.isOpen = true;
+          object.isMinimized = false;
+          object.hasFocus = true;
+          openedWindows.push(object);
+        } else {
+          if (object.hasFocus) {
+            $(object.windowid).effect("drop", { direction: "down" }, 200);
+            object.isOpen = true;
+            object.isMinimized = true;
+            object.hasFocus = false;
+            openedWindows = openedWindows.filter(obj => obj.name !== object.name);
+          } else {
+            object.isOpen = true;
+            object.isMinimized = false;
+            object.hasFocus = true;
+            openedWindows = openedWindows.filter(obj => obj.name !== object.name);
+            openedWindows.push(object);
+          }
+        }
+      } else {
+        $(object.windowid).fadeIn(180);
+        object.isOpen = true;
+        object.isMinimized = false;
+        object.hasFocus = true;
+        openedWindows.push(object);
+      }
+    }
+    UpdateTaskBar();
+    UpdateZIndex();
+  }
+
+  function UpdateTaskBar() {
+    for (var i = 0; i < windows.length; i++) {
+      windows[i].hasFocus = false;
+    }
+
+    if (openedWindows.length > 0) {
+      openedWindows[openedWindows.length - 1].hasFocus = true;
+    }
+
+    for (var i = 0; i < windows.length; i++) {
+      $(windows[i].taskbarid).removeClass("active focused");
+
+      if (windows[i].isOpen) {
+        $(windows[i].taskbarid).addClass("active");
+        $(windows[i].taskbarindicator).removeClass("unfocused");
+
+        if (windows[i].hasFocus) {
+          $(windows[i].taskbarindicator).show();
+          $(windows[i].taskbarid).addClass("focused");
+        }
+        if (windows[i].isMinimized) {
+          $(windows[i].taskbarindicator).show();
+          $(windows[i].taskbarindicator).addClass("unfocused");
+        }
+      } else {
+        $(windows[i].taskbarindicator).addClass("unfocused").hide();
+      }
+    }
+  }
+
+  function UpdateZIndex() {
+    for (var i = 0; i < openedWindows.length; i++) {
+      for (var j = 0; j < 5; j++) {
+        $(openedWindows[i].windowid).removeClass("zindex" + j);
+      }
+      $(openedWindows[i].windowid).addClass("zindex" + i);
+    }
+  }
+
+  // Theme Switcher inside Settings
+  function SetTheme(mode) {
+    if (mode === 'dark') {
+      document.body.classList.add('dark-mode');
+      $('#darkPick').addClass('active');
+      $('#lightPick').removeClass('active');
+      $('.container').css('background-image', "url('https://cdn.vox-cdn.com/uploads/chorus_asset/file/22661965/img19.jpg')");
+      $('#themePreviewBox').css('background-image', "url('https://cdn.vox-cdn.com/uploads/chorus_asset/file/22661965/img19.jpg')");
+    } else {
+      document.body.classList.remove('dark-mode');
+      $('#lightPick').addClass('active');
+      $('#darkPick').removeClass('active');
+      $('.container').css('background-image', "url('https://cdn.wallpaperhub.app/cloudcache/6/7/6/7/2/e/67672e59d11736a6035042a23791af5e5dcc9645.jpg')");
+      $('#themePreviewBox').css('background-image', "url('https://www.bleepstatic.com/images/news/Microsoft/windows-11/leak/new-default-wallpaper.jpg')");
+    }
+  }
+
+  // Power Button Shutdown / Restart
+  function ShutdownOS() {
+    $('#shutdownScreen').css('display', 'flex').hide().fadeIn(400);
+  }
+  function RestartOS() {
+    $('#shutdownScreen').fadeOut(400);
+  }
+
+  // Taskbar Clock
+  function GetTime() {
+    var date = new Date();
+    var today = formatAMPM(date);
+    var month = date.getMonth() + 1;
+    var calDate = month + "/" + date.getDate() + "/" + date.getFullYear();
+    $(".taskbarTime").html(today + "<br />" + calDate);
+  }
+
+  function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    return hours + ":" + minutes + " " + ampm;
+  }
+
+  GetTime();
+  setInterval(GetTime, 15000);
+</script>
+
+</body>
+</html>

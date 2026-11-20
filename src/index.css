@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --win-font-family: 'Play', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --win-bg-desktop: #0b4f8a;
+  --win-surface: rgba(246, 248, 252, 0.74);
+  --win-surface-solid: #f4f6fb;
+  --win-surface-card: rgba(255, 255, 255, 0.62);
+  --win-surface-card-hover: rgba(255, 255, 255, 0.88);
+  --win-surface-footer: rgba(224, 232, 245, 0.42);
+  --win-text-primary: #111827;
+  --win-text-secondary: #4b5563;
+  --win-border: rgba(255, 255, 255, 0.65);
+  --win-border-subtle: rgba(15, 23, 42, 0.08);
+  --win-specular: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  --win-accent: #0067c0;
+  --win-accent-bright: #0078d4;
+  --win-shadow: 0 20px 48px -8px rgba(15, 23, 42, 0.22), 0 4px 14px rgba(15, 23, 42, 0.08);
+  --win-taskbar-bg: rgba(246, 248, 253, 0.74);
+  --win-scrollbar: rgba(15, 23, 42, 0.22);
+  --win-blur: 32px;
+  --win-radius: 16px;
+}
+
+.dark {
+  --win-bg-desktop: #060e20;
+  --win-surface: rgba(26, 28, 36, 0.78);
+  --win-surface-solid: #1a1c24;
+  --win-surface-card: rgba(44, 48, 60, 0.58);
+  --win-surface-card-hover: rgba(62, 68, 84, 0.78);
+  --win-surface-footer: rgba(16, 18, 24, 0.56);
+  --win-text-primary: #f8fafc;
+  --win-text-secondary: #cbd5e1;
+  --win-border: rgba(255, 255, 255, 0.16);
+  --win-border-subtle: rgba(255, 255, 255, 0.1);
+  --win-specular: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  --win-accent: #60cdff;
+  --win-accent-bright: #38bdf8;
+  --win-shadow: 0 24px 54px -8px rgba(0, 0, 0, 0.58), 0 4px 16px rgba(0, 0, 0, 0.35);
+  --win-taskbar-bg: rgba(24, 26, 34, 0.76);
+  --win-scrollbar: rgba(255, 255, 255, 0.24);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: var(--win-font-family);
+  font-size: var(--win-root-size, 16px);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-play {
+  font-family: var(--win-font-family);
+}
+
+.win-acrylic {
+  background-color: var(--win-surface);
+  backdrop-filter: blur(var(--win-blur)) saturate(175%);
+  -webkit-backdrop-filter: blur(var(--win-blur)) saturate(175%);
+  border: 1px solid var(--win-border);
+  box-shadow: var(--win-shadow), var(--win-specular);
+  color: var(--win-text-primary);
+  transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+}
+
+.win-dock {
+  background-color: var(--win-taskbar-bg);
+  backdrop-filter: blur(var(--win-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--win-blur)) saturate(180%);
+  border: 1px solid var(--win-border);
+  box-shadow: var(--win-shadow), var(--win-specular);
+  color: var(--win-text-primary);
+  transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+}
+
+.win-card {
+  background-color: var(--win-surface-card);
+  border: 1px solid var(--win-border-subtle);
+  box-shadow: var(--win-specular);
+  transition: background-color 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+
+.win-card:hover {
+  background-color: var(--win-surface-card-hover);
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.win-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.win-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.win-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--win-scrollbar);
+  border-radius: 3px;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
